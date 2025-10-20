@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a027fc51-935b-44e9-b5ad-ea2baa528733" name="变更" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Pages/tes2.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/Pages/testB.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/longsea/al.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/main.py" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2TVtsBadgCM2vrKASbgxYnSFaTv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Notification.DisplayName-DoNotAsk-Plugin Error&quot;: &quot;插件加载失败&quot;,
+    &quot;Notification.DoNotAsk-Plugin Error&quot;: &quot;true&quot;,
+    &quot;Python.ans_test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.s001.executor&quot;: &quot;Run&quot;,
+    &quot;Python.sql3.executor&quot;: &quot;Run&quot;,
+    &quot;Python.sqlite.executor&quot;: &quot;Run&quot;,
+    &quot;Python.tes.executor&quot;: &quot;Run&quot;,
+    &quot;Python.tes2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.testD.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/BaiduSyncdisk/lngsea/stx&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  }
+}</component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="st7" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="st7" />
+      </console-settings>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\BaiduSyncdisk\lngsea\stx\test" />
+      <recent name="D:\BaiduSyncdisk\lngsea\stx\test\new" />
+      <recent name="D:\BaiduSyncdisk\lngsea\stx\sqlite" />
+      <recent name="D:\BaiduSyncdisk\lngsea\stx\longsea" />
+      <recent name="C:\loongsea\st7\longsea" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\BaiduSyncdisk\lngsea\stx\test" />
+      <recent name="D:\BaiduSyncdisk\lngsea\stx\test\rd" />
+      <recent name="D:\BaiduSyncdisk\lngsea\stx\Pages" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.test1">
+    <configuration name="ans_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="st7" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Pages" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="D:\BaiduSyncdisk\lngsea\stx\Pages\ans_test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="st7" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="st7" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/test1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.test1" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.ans_test" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-348a24fa61fa-5312c7369657-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.23774.444" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="a027fc51-935b-44e9-b5ad-ea2baa528733" name="变更" comment="" />
+      <created>1691140279792</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1691140279792</updated>
+      <workItem from="1691140337387" duration="4036000" />
+      <workItem from="1691153634488" duration="4480000" />
+      <workItem from="1691218610838" duration="10053000" />
+      <workItem from="1691242106326" duration="3146000" />
+      <workItem from="1691288733760" duration="7503000" />
+      <workItem from="1691312584693" duration="3969000" />
+      <workItem from="1691328116230" duration="2490000" />
+      <workItem from="1691393713710" duration="10769000" />
+      <workItem from="1691416195528" duration="4657000" />
+      <workItem from="1691460882314" duration="8554000" />
+      <workItem from="1691479811224" duration="1624000" />
+      <workItem from="1691502778876" duration="3401000" />
+      <workItem from="1691549150715" duration="4757000" />
+      <workItem from="1691570858847" duration="4814000" />
+      <workItem from="1691588188309" duration="3975000" />
+      <workItem from="1691661849744" duration="1504000" />
+      <workItem from="1691673720248" duration="4158000" />
+      <workItem from="1691724458346" duration="1188000" />
+      <workItem from="1691741144434" duration="4317000" />
+      <workItem from="1691760244337" duration="3223000" />
+      <workItem from="1691804806784" duration="6801000" />
+      <workItem from="1691827917822" duration="5183000" />
+      <workItem from="1691845906678" duration="4344000" />
+      <workItem from="1691904578898" duration="12000000" />
+      <workItem from="1691934698111" duration="3275000" />
+      <workItem from="1691987707675" duration="595000" />
+      <workItem from="1691995676785" duration="596000" />
+      <workItem from="1692020203562" duration="594000" />
+      <workItem from="1692174550096" duration="3963000" />
+      <workItem from="1692192877553" duration="4066000" />
+      <workItem from="1692245183172" duration="1632000" />
+      <workItem from="1692258583581" duration="2475000" />
+      <workItem from="1692278030888" duration="594000" />
+      <workItem from="1692328265653" duration="3945000" />
+      <workItem from="1692349265499" duration="1435000" />
+      <workItem from="1692625505114" duration="1468000" />
+      <workItem from="1692798590085" duration="794000" />
+      <workItem from="1692882213868" duration="3973000" />
+      <workItem from="1692973241086" duration="2587000" />
+      <workItem from="1693036097453" duration="2088000" />
+      <workItem from="1693038983538" duration="7100000" />
+      <workItem from="1693839816737" duration="7000" />
+      <workItem from="1697550506789" duration="1204000" />
+      <workItem from="1697636140347" duration="2264000" />
+      <workItem from="1697722823295" duration="2201000" />
+      <workItem from="1697811572316" duration="628000" />
+      <workItem from="1697870629987" duration="2640000" />
+      <workItem from="1697981133409" duration="1424000" />
+      <workItem from="1698677269858" duration="1076000" />
+      <workItem from="1698931878161" duration="594000" />
+      <workItem from="1704807660248" duration="747000" />
+      <workItem from="1717684626355" duration="1857000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.csv" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/st7$testD.coverage" NAME="testD 覆盖结果" MODIFIED="1717685528464" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Pages" />
+  </component>
+</project>

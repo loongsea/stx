@@ -125,11 +125,11 @@ start = time.time()
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■       获取双达标报表(sdb_dfs)        ■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # 双达标的第一条件：学科名次段阈值列表.
-mcd_thresh_ls=[0,200,260,300]
+mcd_thresh_ls=[0,180,240,300]
 # 学科名次段阈값列表对应积分.
 mcd_thresh_score = [10, 9, 2, 1, 0]       # 每个分数段的积分值
 # 双达标的第二条件：最大校次.
-max_total_rank = 260
+max_total_rank = 240
 
 # -----------------------------------------------------------------------------------------
 
@@ -181,8 +181,8 @@ wb = load_workbook(mb_file_path)  # 模板文件.
 wb,ws = al.trim_wb(wb,sht_MB_name)
 
 # 将双达标报表注入ws表中.
-# al2.dfs_to_ws(ws,5,4,fsd_dfs.values(),16,0,True,idx=True)
 al2.dfs_to_ws(ws,5,4,sdb_dfs.values(),16,0,False,idx=False)
+# 将两率一平报表注入ws表中.
 al2.dfs_to_ws(ws,5,12,lv_dfs.values(),16,0,False,idx=False)
 # 将班级报表注入ws表中.
 al2.dfs_to_ws(ws,133,4,bj_dfs,16,0,False,idx=False)

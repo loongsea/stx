@@ -5,6 +5,7 @@ from io import BytesIO
 import numpy as np
 import openpyxl
 import pandas as pd
+import streamlit
 from openpyxl.utils.dataframe import dataframe_to_rows
 import zipfile
 import re
@@ -229,7 +230,8 @@ class Andf:
                dic_total_sbj: Dict[int, List[str]],     #
                thresh: List[float] = [0.6, 0.8],        # 阈值列表.如:[0.6,0.8]
                max_class_rank: int = 40,                # 班级最大名次，整数。默认40.
-               include_count_valid: int = 0             # 添加统计有效人数列。默认不统计：0。
+               include_count_valid: int = 0,             # 添加统计有效人数列。默认不统计：0。
+               add_rank_cols= None,
                ) -> Dict[Any, pd.DataFrame]:
         """
         生成两率一平报表.
@@ -258,6 +260,12 @@ class Andf:
 
         # 依据第0列索引，分割数据为多个df表。
         dfs_lv = df_split_levels(df_lv)
+
+        # 加入排名列
+        if add_rank_cols !=None:
+            for key, dff in dfs_lv.items():
+                dfs_lv[key] = df_add_cols_rank(dff, columns_to_rank=add_rank_cols)
+
         return dfs_lv
 
     # 生成班级分析报表-各次段统计
@@ -793,208 +801,7 @@ def make_dual_cond_counters(
     return counters
 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-# # 根据阈值生成一组成绩区间统计函数（计数 + 比率），可选生成低于最低分统计、平均分函数和有效数据个数统计。
-# def make_rate_counters(
-#         thresh: Union[List[Union[int, float]], Tuple[Union[int, float], ...], np.ndarray],
-#         cumu: bool = True,
-#         include_mean: bool = True,
-#         include_below_min: bool = False,
-#         include_count_valid: int = 0
-#         ) -> Tuple[Callable, ...]:
-#     """
-#     根据阈值生成一组成绩区间统计函数（计数 + 比率），可选生成低于最低分统计、平均分函数和有效数据个数统计。
-#
-#     🎯 核心特性：
-#       - 直接返回函数组，无需字典包装；
-#       - 函数名采用数学区间风格：count[60,80)、ratio[60,80)、count[80,+∞)、ratio[80,+∞)；
-#       - 支持区间统计和累计统计两种模式；
-#       - 可选生成低于最低分的统计函数（在两种模式下均有效）；
-#       - 可选生成平均分计算函数（自动忽略NaN值）；
-#       - 新增：可选生成有效数据个数统计函数（count_valid），位置由 include_count_valid 控制。
-#
-#     📊 位置控制逻辑：
-#       - include_count_valid = 0: 不添加 count_valid；
-#       - include_count_valid = 1: 将 count_valid 添加在函数列表的第一个位置；
-#       - include_count_valid = -1: 将 count_valid 添加在函数列表的最后一个位置。
-#
-#     :param thresh: list/tuple/ndarray，阈值列表，必须是长度 >=2 的升序序列；
-#     :param cumu: bool，是否为累计统计模式，默认 False；
-#     :param include_mean: bool, 是否生成计算平均分的函数，默认 False；
-#     :param include_below_min: bool, 是否生成低于最低分的统计函数，默认 False；
-#     :param include_count_valid: int, 控制 count_valid 的位置（0=不添加, 1=第一个位置, -1=最后一个位置）；
-#     :return: tuple，包含所有生成的统计函数。
-#
-#     :raises ValueError: 当参数不符合要求时；
-#     :raises TypeError: 当参数类型不正确时。
-#     """
-#     # 参数验证。
-#     if not isinstance(thresh, (list, tuple, np.ndarray)):
-#         raise TypeError("thresh 必须为列表、元组或 numpy 数组。")
-#
-#     if isinstance(thresh, np.ndarray):
-#         thresh = thresh.tolist()
-#
-#     if len(thresh) < 2:
-#         raise ValueError("thresh 必须包含至少 2 个元素。")
-#
-#     for i, t in enumerate(thresh):
-#         if not isinstance(t, (int, float)):
-#             raise TypeError(f"thresh 中的所有元素必须是数字类型，但索引 {i} 的元素是 {type(t)}。")
-#
-#     for i in range(len(thresh) - 1):
-#         if thresh[i] >= thresh[i + 1]:
-#             raise ValueError("thresh 必须是严格升序序列。")
-#
-#     if not isinstance(cumu, bool):
-#         raise TypeError("cumu 必须是布尔值。")
-#
-#     if not isinstance(include_below_min, bool):
-#         raise TypeError("include_below_min 必须是布尔值。")
-#
-#     if not isinstance(include_mean, bool):
-#         raise TypeError("include_mean 必须是布尔值。")
-#
-#     if not isinstance(include_count_valid, int):
-#         raise TypeError("include_count_valid 必须是整数（0, 1, -1）。")
-#
-#     if include_count_valid not in [0, 1, -1]:
-#         raise ValueError("include_count_valid 必须是 0, 1 或 -1。")
-#
-#     for i, t in enumerate(thresh):
-#         if t < 0:
-#             raise ValueError(f"thresh 中的所有元素必须为非负数，但索引 {i} 的元素为 {t}。")
-#
-#     def make_threshold_func(lower, upper=None, ratio=False, cumu_mode=False, is_last_interval=False, below_min=False):
-#         """
-#         内部辅助函数，用于创建阈值相关的统计函数（计数/比率）。
-#         """
-#
-#         def func(scores):
-#             # 处理 pandas Series 对象。
-#             if isinstance(scores, pd.Series):
-#                 if scores.empty:
-#                     return np.nan if ratio else 0
-#                 arr = scores.values
-#             elif not isinstance(scores, (list, tuple, np.ndarray)):
-#                 raise TypeError("输入分数必须是列表、元组或 numpy 数组。")
-#             else:
-#                 arr = np.array(scores)
-#
-#             # 验证数组元素类型。
-#             if not np.issubdtype(arr.dtype, np.number):
-#                 raise TypeError("分数数组中的所有元素必须是数字类型。")
-#
-#             mask = np.zeros(arr.shape, dtype=bool)  # 初始化掩码。
-#
-#             if below_min:
-#                 mask = arr < lower
-#             elif cumu_mode:
-#                 mask = arr >= lower
-#             else:
-#                 if is_last_interval:
-#                     mask = (arr >= lower) & (arr <= upper)
-#                 else:
-#                     mask = (arr >= lower) & (arr < upper)
-#
-#             count = np.sum(mask)
-#             total = len(arr)
-#             return count / total if ratio and total > 0 else int(count)
-#
-#         # 生成函数名。
-#         prefix = "ratio" if ratio else "count"
-#         if below_min:
-#             func_name = f"{prefix}(-∞,{lower})"
-#         elif cumu_mode:
-#             func_name = f"{prefix}[{lower},+∞)"
-#         else:
-#             if is_last_interval:
-#                 func_name = f"{prefix}[{lower},{upper}]"
-#             else:
-#                 func_name = f"{prefix}[{lower},{upper})"
-#         func.__name__ = func_name
-#         return func
-#
-#     def make_mean_func():
-#         """
-#         平均分计算函数：自动忽略 NaN 值。
-#         """
-#
-#         def func(scores):
-#             if isinstance(scores, pd.Series):
-#                 arr = scores.values
-#             elif not isinstance(scores, (list, tuple, np.ndarray)):
-#                 raise TypeError("输入分数必须是列表、元组或 numpy 数组。")
-#             else:
-#                 arr = np.array(scores)
-#
-#             # 过滤掉 NaN 值。
-#             valid = arr[~np.isnan(arr)]
-#
-#             if len(valid) == 0:
-#                 return np.nan
-#
-#             return float(np.mean(valid))
-#
-#         func.__name__ = "mean"
-#         return func
-#
-#     def make_count_valid_func():
-#         """
-#         有效数据个数统计函数。
-#         """
-#
-#         def func(scores):
-#             if isinstance(scores, pd.Series):
-#                 arr = scores.values
-#             elif not isinstance(scores, (list, tuple, np.ndarray)):
-#                 raise TypeError("输入分数必须是列表、元组或 numpy 数组。")
-#             else:
-#                 arr = np.array(scores)
-#
-#             # 计算有效数据个数（非 NaN）。
-#             valid = ~np.isnan(arr)
-#             return int(np.sum(valid))
-#
-#         func.__name__ = "count_valid"
-#         return func
-#
-#     funcs = []
-#     n = len(thresh)
-#     min_thresh = thresh[0]
-#
-#     # 生成低于最低分的统计。
-#     if include_below_min:
-#         below_count_func = make_threshold_func(min_thresh, ratio=False, below_min=True)
-#         below_ratio_func = make_threshold_func(min_thresh, ratio=True, below_min=True)
-#         funcs.extend([below_count_func, below_ratio_func])
-#
-#     # 生成阈值区间统计。
-#     for i in range(n - 1):
-#         lower = thresh[i]
-#         upper = thresh[i + 1]
-#         is_last_interval = (i == n - 2)
-#
-#         count_func = make_threshold_func(lower, upper, ratio=False, cumu_mode=cumu, is_last_interval=is_last_interval)
-#         ratio_func = make_threshold_func(lower, upper, ratio=True, cumu_mode=cumu, is_last_interval=is_last_interval)
-#         funcs.extend([count_func, ratio_func])
-#
-#     # 生成平均分统计。
-#     if include_mean:
-#         mean_func = make_mean_func()
-#         funcs.append(mean_func)
-#
-#     # 根据 include_count_valid 添加有效数据个数统计。
-#     if include_count_valid == 1:
-#         count_valid_func = make_count_valid_func()
-#         funcs.insert(0, count_valid_func)  # 插入到第一个位置。
-#     elif include_count_valid == -1:
-#         count_valid_func = make_count_valid_func()
-#         funcs.append(count_valid_func)  # 插入到最后一个位置。
-#
-#     return tuple(funcs)
-
-
-
+# 根据阈值生成一组成绩区间统计函数（计数 + 比率），可选生成低于最低分统计、平均分函数和有效数据个数统计。
 def make_rate_counters(
         thresh: Union[List[Union[int, float]], Tuple[Union[int, float], ...], np.ndarray],
         cumu: bool = True,
@@ -1894,6 +1701,72 @@ def df_pair_cols(
         df.drop(columns=[target_col], inplace=True)
 
     return df
+
+
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+# 给一个DataFrame的某此列添加排列。
+def df_add_cols_rank(df: pd.DataFrame, columns_to_rank: list, ascending=False) -> pd.DataFrame:
+    """
+    给一个DataFrame的某此列添加排列。
+
+    排名使用 pd.Series.rank() 方法，可以处理 NaN 值和并列情况。
+    默认使用降序排名（分数/比率越高，排名越靠前）。
+
+    :param df: 输入的 pandas DataFrame。
+    :param columns_to_rank: 需要添加排名的列标识列表。可以是列名（str）或列序号（int）的列表。
+                            例如 ["ratio[60,80)", "mean"] 或 [1, 4] 或 ["ratio[60,80)", 4]。
+    :param ascending: bool, 是否升序排名。False (默认) 表示数值越大排名越靠前（如高分排名靠前），
+                      True 表示数值越小排名越靠前（如低错误率排名靠前）。
+    :return: 返回一个新的 DataFrame，其中在指定列后添加了排名列。
+    """
+    # 防止修改原始 DataFrame
+    new_df = df.copy()
+
+    # 首先将所有输入转换为列名
+    resolved_col_names = []
+    for item in columns_to_rank:
+        if isinstance(item, str):
+            # 如果是字符串，直接作为列名
+            if item not in new_df.columns:
+                print(f"警告: 指定的列名 '{item}' 在 DataFrame 中不存在，将跳过。")
+                continue
+            resolved_col_names.append(item)
+        elif isinstance(item, int):
+            # 如果是整数，检查是否为有效的列索引
+            if item < 0:
+                item = len(new_df.columns) + item # 处理负索引
+            if 0 <= item < len(new_df.columns):
+                col_name = new_df.columns[item]
+                resolved_col_names.append(col_name)
+            else:
+                print(f"警告: 指定的列序号 {item} 超出范围 [0, {len(new_df.columns)-1}]，将跳过。")
+                continue
+        else:
+            print(f"警告: 列标识 '{item}' 类型无效 (应为 str 或 int)，将跳过。")
+            continue
+
+    # 从后往前遍历，以避免列索引因插入新列而变化
+    for col_name in reversed(resolved_col_names):
+        source_series = new_df[col_name]
+
+        # 计算排名
+        # method='min' 表示并列项目取最小排名 (例如，两个第一，则下一个为第三)
+        # na_option='keep' 表示 NaN 值排名为 NaN
+        # ascending=False 表示数值大的排名靠前 (1, 2, 3...)
+        ranks = source_series.rank(method='min', na_option='keep', ascending=ascending)
+
+        # 找到源列的索引位置
+        source_col_idx = new_df.columns.get_loc(col_name)
+
+        # 将排名列插入到源列之后
+        rank_col_name = f"{col_name}_rank"
+        new_df.insert(loc=source_col_idx + 1, column=rank_col_name, value=ranks)
+
+    return new_df
+
+
+
+
 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # 合并多个DataFrame，处理重复列名并提供详细的警告和错误信息。

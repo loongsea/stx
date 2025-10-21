@@ -112,24 +112,18 @@ elif uploaded_file:
 
 
 start = time.time()
-# ■■■■■■■■■■■■■■■■■■■■■■■■■■■   获取分数段_达标报表(fsd_db_dfs)     ■■■■■■■■■■■■■■■■■■■■■■■■■■■
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■   获取分数段_报表(fsd_db_dfs)     ■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # {分数段：学科}字典.
-dic_fsd = {(36, 48, 60, 72, 78, 84, 90, 96, 102, 108, 114, 120): ["语文", "数学", "英语"],
-           (21, 28, 35, 42, 45, 49, 52, 56, 60, 63, 66, 70): ["物理", "政治"],
-           (15, 20, 25, 30, 32, 35, 37, 40, 42, 45, 48, 50): ["化学","生物", "历史", "地理"]}
-# 每个分数段的权重积分，其中第一个为双达标积分
-fsd_thresh_score = [1,2,3,4,5,6,7,8,9,10,11,12,13]
-# 设置学科达标名次：
-max_subject_rank = 260
-# 设置总分达标名次：
-max_total_rank = 260
+dic_fsd = {(48, 60, 72, 84, 96, 108, 120): ["语文", "数学", "英语"],
+           (28, 35, 42, 49, 56, 63, 70): ["物理", "政治"],
+           (20, 25, 30, 35, 40, 45, 50): ["化学","生物", "历史", "地理"]}
+# 每个分数段的权重积分，
+fsd_thresh_score = [1,2,6,7,7,7,7]
 
 # 获取分数段_达标报表
-fsd_db_dfs = adf.get_db_fsd(dic_thresh_sbj = dic_fsd,
-                            thresh_score = fsd_thresh_score,
-                            max_subject_rank=max_subject_rank,
-                            max_total_rank=max_total_rank )
+fsd_dfs = adf.get_fsd(dic_thresh_sbj = dic_fsd,
+                      thresh_score = fsd_thresh_score,  )
 
 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   获取两率一平报表（lv_dfs）     ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -144,7 +138,8 @@ dic_lv = {120: ["语文", "数学", "英语"],
 lv_dfs = adf.get_lv(
     dic_total_sbj = dic_lv,
     max_class_rank=max_sbj_cls_rank,
-    include_count_valid=-1 )
+    include_count_valid=1,
+    add_rank_cols=[2,4,5],    )
 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   获取班级分析报表（bj_dfs）     ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -172,13 +167,13 @@ wb,ws = al.trim_wb(wb,sht_MB_name)
 
 # 将各类报表数据注入工作表
 # 分数段报表
-al2.dfs_to_ws(ws, 5, 4, list(fsd_db_dfs.values()), 16, 0, False, idx=False)
+al2.dfs_to_ws(ws, 5, 4, list(fsd_dfs.values()), 16, 0, False, idx=False)
 # 两率一平报表
-al2.dfs_to_ws(ws, 5, 20, list(lv_dfs.values()), 16, 0, False, idx=False)
+al2.dfs_to_ws(ws, 5, 14, list(lv_dfs.values()), 16, 0, False, idx=False)
 # 班级分析报表(积分版)
-al2.dfs_to_ws(ws, 133, 4, bj1_dfs, 16, 0, False, idx=False)
+al2.dfs_to_ws(ws, 149, 4, bj1_dfs, 16, 0, False, idx=False)
 # 班级分析报表(累计版)
-al2.dfs_to_ws(ws, 133, 17, bj0_dfs, 16, 0, False, idx=False)
+al2.dfs_to_ws(ws, 149, 17, bj0_dfs, 16, 0, False, idx=False)
 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # C:选择模板,创建工作表,将成绩表、名次表注入工作薄中.

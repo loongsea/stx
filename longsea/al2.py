@@ -29,7 +29,7 @@ class Andf:
 
     # 标准学科名列表：self.__sbj，           包括成绩表没有的学科名。
     # 标准学科名字典：self.__sbj_dic，       标准学科名对应的字典。
-    # 己用学科名列表：self.__sbj_lst，       所有已经使用的学科名列表。
+    # 已用学科名列表：self.__sbj_lst，       所有已经使用的学科名列表。
     # 总分班次级次成绩全表：self.__df         包括总分、班次、级次的成绩表。
     def __init__(self, df: pd.DataFrame) -> None:
 
@@ -43,8 +43,12 @@ class Andf:
         # 对学科列表进行排序，排序规则为：字典中key对应的值。
         self.__sbj_lst.sort(key=lambda x: self.__sbj_dic[x])
 
+        # 确保学科成绩列都是数值类型，避免在计算总分时出现类型错误
+        for subject in self.__sbj_lst:
+            self.__df[subject] = pd.to_numeric(self.__df[subject], errors='coerce')
+        
         # 增加总分列、班次、级次列，创建基础df对象
-        self.__df["总分"] = df.loc[:, self.__sbj_lst].sum(axis=1)
+        self.__df["总分"] = df.loc[:, self.__sbj_lst].sum(axis=1, min_count=1)
         # 增加班次列
         self.__df["班次"] = df.groupby("班级")["总分"].rank(ascending=False, method="min")
         # 增加级次列
@@ -1219,8 +1223,18 @@ def dfs_to_ws(
                 current_row = row + r_offset
                 current_col = col + c_offset
 
+                # 检查单元格是否为合并单元格，如果是，则找到合并区域的起始单元格
+                cell = ws.cell(row=current_row, column=current_col)
+                if hasattr(cell, 'merged_cell') and cell.merged_cell:
+                    # 对于合并单元格，我们需要找到左上角的单元格来写入值
+                    for merged_range in ws.merged_cells.ranges:
+                        if cell.coordinate in merged_range:
+                            # 获取合并区域的起始单元格
+                            cell = ws.cell(row=merged_range.min_row, column=merged_range.min_col)
+                            break
+                
                 # 直接赋值
-                ws.cell(row=current_row, column=current_col).value = value
+                cell.value = value
 
         # 更新位置为下一个DataFrame的起始位置
         row +=  rg
